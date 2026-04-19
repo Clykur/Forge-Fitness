@@ -1,0 +1,115 @@
+Build a modern, premium, high-conversion fitness studio website using Next.js (App Router), Tailwind CSS, and Framer Motion.
+
+Goal:
+The website should feel like a ₹5L+ agency-built product — clean, bold, high-performance, mobile-first, and designed to convert visitors into bookings.
+
+Brand Context:
+- Fitness Studio based in Bangalore, India
+- Target: young professionals (18–40), premium clients
+- Tone: energetic, elite, minimal, powerful
+
+Design Requirements:
+- Use high-quality images from Pexels (fitness, gym, trainers, transformations)
+- Dark theme with neon accents (black, deep gray, electric green/blue)
+- Large bold typography (use Google Fonts like Inter / Sora / Space Grotesk)
+- Smooth animations using Framer Motion
+- Glassmorphism + subtle gradients
+- Avoid boxed card-heavy layouts — use clean sections with spacing
+
+Pages/Sections:
+
+1. HERO SECTION (Full screen)
+- Background: video or dynamic fitness image
+- Headline: “Transform Your Body. Own Your Discipline.”
+- Subtext: “Premium fitness studio in Bangalore with expert trainers and real results.”
+- CTA Buttons:
+   - “Join Next Session” (primary, glowing button)
+   - “View Classes”
+- Add urgency tag: “Next batch starts in 02:15:30” (countdown timer)
+
+2. LIVE CLASS SCHEDULE (Core feature)
+- Show today’s sessions in a clean timeline UI
+- Each slot:
+   - Class name (HIIT, Strength, Yoga)
+   - Time
+   - Trainer
+   - Status (Available / Few Spots Left / Full)
+- Highlight one session with:
+   “🔥 Starting Soon”
+- Button: “Book This Session”
+
+3. TRAINER PROFILES
+- Horizontal scroll or grid
+- Each trainer:
+   - Image
+   - Name
+   - Specialty
+   - Short powerful tagline
+- Hover animation with scale + glow
+
+4. TRANSFORMATION GALLERY
+- Before/after images (grid or slider)
+- Add subtle animation on scroll
+- Include short testimonials overlay
+
+5. MEMBERSHIP PLANS
+- 3 tiers:
+   - Starter
+   - Pro
+   - Elite
+- Highlight “Most Popular”
+- Include CTA: “Join Now”
+
+6. URGENCY SECTION
+- Big bold section:
+   “Limited Slots. No Excuses.”
+- Show number of remaining slots dynamically
+- CTA: “Reserve Your Spot”
+
+7. WHATSAPP STICKY CTA
+- Floating button (bottom right)
+- Link:
+   https://wa.me/918179299096
+- Label: “Chat to Join Now”
+
+8. LOCATION SECTION
+- Show: Bangalore, India
+- Embed Google Map
+- Add: “Visit Our Studio”
+
+9. FOOTER
+- Minimal
+- Include contact number: +91 8179299096
+- Social icons
+
+Functional Requirements:
+- Fully responsive (mobile-first)
+- Smooth scrolling
+- Sticky navbar with blur effect
+- Fast loading (optimize images)
+- Use reusable components
+- Clean folder structure
+
+Animations:
+- Hero fade-in + scale
+- Scroll-triggered animations
+- Button hover glow effects
+- Micro-interactions for premium feel
+
+Extra Conversion Features:
+- Sticky top bar:
+   “⚡ 3 slots left for today’s session”
+- Exit intent popup:
+   “Wait! Get 1 free trial session”
+- CTA repetition every 2 sections
+
+Tech:
+- Next.js latest
+- Tailwind CSS
+- Framer Motion
+- Use server components where possible
+
+Output:
+- Clean, production-ready code
+- No unnecessary comments
+- Focus on UI + UX + conversion psychology
