@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, ArrowRight } from "lucide-react";
-import { waLink } from "../lib/whatsapp";
 
 const faqs = [
   {
@@ -109,12 +108,10 @@ export function FAQ() {
           >
             <p className="text-white/40 text-sm mb-3">Still have questions?</p>
             <a
-              href={waLink("Hi! I have a question about Forge Fitness that isn't in the FAQ. Can you help?")}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="tel:+918179299096"
               className="inline-flex items-center gap-2 text-primary font-bold hover:underline text-sm"
             >
-              Chat with us on WhatsApp
+              Call us at +91 81792 99096
               <ArrowRight className="w-4 h-4" />
             </a>
           </motion.div>

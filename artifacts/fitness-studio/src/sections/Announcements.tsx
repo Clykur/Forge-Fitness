@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Megaphone, Tag, CalendarCheck, Users, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 import { waLink } from "../lib/whatsapp";
 
 const updates = [
@@ -11,7 +12,8 @@ const updates = [
     body: "Our new morning batch (6 AM & 8 AM slots) kicks off May 1st. Early registrations get a complimentary nutrition consultation worth ₹2,000.",
     date: "Apr 19, 2026",
     cta: "Reserve a Spot",
-    msg: "Hi! I'd like to register for the May batch at Forge Fitness. Can you share the details?",
+    type: "booking",
+    waMsg: "Hi! I'd like to register for the May batch at Forge Fitness. Can you share the details?",
   },
   {
     icon: Tag,
@@ -21,17 +23,19 @@ const updates = [
     body: "Bring a friend to Forge Fitness and both of you get 1 month added to your membership. No limits — the more you refer, the more you earn.",
     date: "Valid through May 31",
     cta: "Claim Offer",
-    msg: "Hi! I heard about the referral offer at Forge Fitness. I'd like to refer a friend and claim our free month.",
+    type: "booking",
+    waMsg: "Hi! I heard about the referral offer at Forge Fitness. I'd like to refer a friend and claim our free month.",
   },
   {
     icon: Users,
     tag: "Event",
     tagColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
-    title: "Weekend Warrior Program — Launching Soon",
+    title: "Weekend Warrior Program — Launching May 10",
     body: "Can't make it on weekdays? Our Saturday & Sunday only program gives you full gym access + 2 group classes with dedicated coaching. Perfect for busy professionals.",
     date: "Starts May 10",
-    cta: "Join Waitlist",
-    msg: "Hi! I'm interested in the Weekend Warrior program at Forge Fitness. Please add me to the waitlist.",
+    cta: "View Details",
+    type: "info",
+    href: "/contact",
   },
 ];
 
@@ -87,15 +91,25 @@ export function Announcements() {
                 <p className="text-white/55 text-sm leading-relaxed">{item.body}</p>
               </div>
 
-              <a
-                href={waLink(item.msg)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-auto flex items-center gap-1.5 text-primary font-bold text-sm hover:gap-3 transition-all"
-              >
-                {item.cta}
-                <ArrowRight className="w-4 h-4" />
-              </a>
+              {item.type === "booking" ? (
+                <a
+                  href={waLink(item.waMsg!)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto flex items-center gap-1.5 text-primary font-bold text-sm hover:gap-3 transition-all"
+                >
+                  {item.cta}
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <Link
+                  href={item.href!}
+                  className="mt-auto flex items-center gap-1.5 text-white/60 font-bold text-sm hover:text-white hover:gap-3 transition-all"
+                >
+                  {item.cta}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>
