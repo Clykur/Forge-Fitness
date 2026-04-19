@@ -9,18 +9,18 @@ export function ExitIntent() {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
-    const hasSeenPopup = sessionStorage.getItem("exit_intent_seen");
-    if (!hasSeenPopup) {
-      const handleMouseOut = (e: MouseEvent) => {
-        if (e.clientY <= 0) {
-          setIsOpen(true);
-          sessionStorage.setItem("exit_intent_seen", "true");
-          document.removeEventListener("mouseout", handleMouseOut);
-        }
-      };
-      document.addEventListener("mouseout", handleMouseOut);
-      return () => document.removeEventListener("mouseout", handleMouseOut);
+    if (sessionStorage.getItem("exit_intent_seen")) {
+      return;
     }
+    const handleMouseOut = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        setIsOpen(true);
+        sessionStorage.setItem("exit_intent_seen", "true");
+        document.removeEventListener("mouseout", handleMouseOut);
+      }
+    };
+    document.addEventListener("mouseout", handleMouseOut);
+    return () => document.removeEventListener("mouseout", handleMouseOut);
   }, []);
 
   const handleClaim = (e: React.FormEvent) => {
