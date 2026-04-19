@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Star, TrendingUp, Users, Award } from "lucide-react";
+import { waLink } from "../lib/whatsapp";
 
 const stats = [
   { icon: Users, value: "1,200+", label: "Members Transformed" },
@@ -170,7 +171,9 @@ export function Gallery() {
         >
           <p className="text-white/40 text-sm mb-4">Your transformation story starts with one session.</p>
           <a
-            href="#pricing"
+            href={waLink("Hi! I saw the transformation results at Forge Fitness and I'm ready to start my own journey. Can you guide me on getting started?")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-black font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_24px_rgba(57,255,20,0.25)] hover:shadow-[0_0_36px_rgba(57,255,20,0.4)] text-sm"
           >
             Start Your Journey
