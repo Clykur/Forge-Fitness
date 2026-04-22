@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CalendarDays } from "lucide-react";
-import { waLink, WA_DEFAULT } from "../lib/whatsapp";
+import { waLink } from "../lib/whatsapp";
+import { Link } from "wouter";
 
 const JOIN_MSG = waLink(
   "Hi! I'd like to book my spot in the next available session at Forge Fitness. Please share the batch details."
@@ -68,22 +69,21 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
-          <a
-            href={JOIN_MSG}
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <Link
+            href="/pricing"
             className="px-8 py-4 bg-primary text-black font-bold text-lg rounded hover:bg-primary/90 transition-all neon-glow flex items-center justify-center gap-2"
           >
             Join Next Session
             <ArrowRight className="w-5 h-5" />
-          </a>
-          <a
-            href="#classes"
+          </Link>
+          <Link
+            href="/classes"
             className="px-8 py-4 bg-transparent border-2 border-primary text-primary font-bold text-lg rounded hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
           >
             <CalendarDays className="w-5 h-5" />
             View Classes
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

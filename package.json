@@ -3,18 +3,26 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
-  "workspaces": ["artifacts/*", "lib/*", "scripts"],
+  "workspaces": [
+    "artifacts/*",
+    "lib/*",
+    "scripts"
+  ],
   "scripts": {
     "build": "npm run typecheck && npm run build --workspaces --if-present",
     "typecheck:libs": "tsc --build",
     "typecheck": "npm run typecheck:libs && npm run typecheck -w @workspace/fitness-studio -w @workspace/mockup-sandbox -w @workspace/api-server -w @workspace/scripts --if-present"
   },
   "devDependencies": {
-    "typescript": "~5.9.2",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2"
   },
   "overrides": {
     "esbuild": "0.27.3",
     "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.14.2",
+    "zustand": "^5.0.12"
   }
 }
