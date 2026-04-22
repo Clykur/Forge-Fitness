@@ -1,8 +1,24 @@
 import { motion } from "framer-motion";
-import { Flame, Clock, Users, ChevronRight, Lock } from "lucide-react";
+import { Clock, Users, ChevronRight, Lock } from "lucide-react";
 import { waLink } from "../lib/whatsapp";
 
-const classes = [
+/* -------------------- TYPES -------------------- */
+
+type StatusType = "full" | "few" | "available";
+
+type ClassItem = {
+  time: string;
+  duration: string;
+  name: string;
+  trainer: string;
+  spots: number;
+  totalSpots: number;
+  intensity: number;
+};
+
+/* -------------------- DATA -------------------- */
+
+const classes: ClassItem[] = [
   {
     time: "6:00 AM",
     duration: "60 min",
@@ -11,8 +27,6 @@ const classes = [
     spots: 0,
     totalSpots: 12,
     intensity: 5,
-    status: "Full",
-    statusType: "full",
   },
   {
     time: "8:00 AM",
@@ -22,8 +36,6 @@ const classes = [
     spots: 2,
     totalSpots: 10,
     intensity: 4,
-    status: "Starting Soon",
-    statusType: "starting",
   },
   {
     time: "10:00 AM",
@@ -33,8 +45,6 @@ const classes = [
     spots: 4,
     totalSpots: 15,
     intensity: 2,
-    status: "Few Spots Left",
-    statusType: "few",
   },
   {
     time: "5:30 PM",
@@ -44,8 +54,6 @@ const classes = [
     spots: 8,
     totalSpots: 12,
     intensity: 3,
-    status: "Available",
-    statusType: "available",
   },
   {
     time: "7:00 PM",
@@ -55,134 +63,151 @@ const classes = [
     spots: 10,
     totalSpots: 14,
     intensity: 5,
-    status: "Available",
-    statusType: "available",
   },
 ];
 
-const statusConfig: Record<string, { bg: string; text: string; border: string; dot: string }> = {
-  full: { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/30", dot: "bg-red-500" },
-  starting: { bg: "bg-primary/15", text: "text-primary", border: "border-primary/50", dot: "bg-primary" },
-  few: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/30", dot: "bg-amber-500" },
-  available: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/30", dot: "bg-emerald-500" },
+/* -------------------- STATUS -------------------- */
+
+const statusConfig: Record<
+  StatusType,
+  { bg: string; text: string; border: string; dot: string }
+> = {
+  full: {
+    bg: "bg-red-500/10",
+    text: "text-red-400",
+    border: "border-red-500/30",
+    dot: "bg-red-500",
+  },
+  few: {
+    bg: "bg-amber-500/10",
+    text: "text-amber-400",
+    border: "border-amber-500/30",
+    dot: "bg-amber-500",
+  },
+  available: {
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-400",
+    border: "border-emerald-500/30",
+    dot: "bg-emerald-500",
+  },
 };
+
+function getStatus(spots: number): { label: string; type: StatusType } {
+  if (spots <= 0) return { label: "Full", type: "full" };
+  if (spots <= 3) return { label: "Few Spots Left", type: "few" };
+  return { label: "Available", type: "available" };
+}
+
+/* -------------------- COMPONENTS -------------------- */
 
 function IntensityBar({ level }: { level: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className={`h-2.5 w-1 rounded-full ${i < level ? "bg-primary" : "bg-white/10"}`} />
+        <div
+          key={i}
+          className={`h-2.5 w-1 rounded-full ${
+            i < level ? "bg-primary" : "bg-white/10"
+          }`}
+        />
       ))}
     </div>
   );
 }
 
+/* -------------------- MAIN -------------------- */
+
 export function Schedule() {
   return (
-    <section id="classes" className="py-28 bg-background relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-primary/3 to-black/0 pointer-events-none" />
-
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
-        >
-          <div>
-            <p className="text-primary font-bold tracking-widest text-xs uppercase mb-3">Live Schedule</p>
-            <h2 className="text-4xl md:text-6xl font-black font-display uppercase tracking-tight text-white leading-none mb-4">
-              Today's Sessions
-            </h2>
-            <p className="text-white/50 text-lg max-w-xl">
-              Book your slot. Show up. Put in the work.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 glass-card rounded-full border-white/10 w-fit">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white/70 text-sm font-medium">Live updates</span>
-          </div>
-        </motion.div>
-
+    <section className="py-28 bg-background">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col gap-3">
           {classes.map((cls, i) => {
-            const sc = statusConfig[cls.statusType];
-            const isStarting = cls.statusType === "starting";
-            const isFull = cls.statusType === "full";
-            const occupancyPct = Math.round(((cls.totalSpots - cls.spots) / cls.totalSpots) * 100);
+            const { label, type } = getStatus(cls.spots);
+            const sc = statusConfig[type];
+            const isFull = type === "full";
+
+            const booked = cls.totalSpots - cls.spots;
+            const occupancyPct = Math.round(
+              (booked / cls.totalSpots) * 100
+            );
+
             const bookMsg = waLink(
-              `Hi! I'd like to book the ${cls.time} ${cls.name} class with ${cls.trainer} at Forge Fitness today. Please confirm my spot.`
+              `Hi! I'd like to book the ${cls.time} ${cls.name} class with ${cls.trainer} at Forge Fitness today.`
             );
 
             return (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className={`group relative rounded-xl overflow-hidden border transition-all duration-300 ${
-                  isStarting
-                    ? "border-primary/40 bg-primary/5 shadow-[0_0_30px_rgba(57,255,20,0.08)]"
-                    : "border-white/8 bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.05]"
-                }`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="rounded-xl border border-white/10 bg-white/[0.03] p-5 md:p-6"
               >
-                {isStarting && (
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
-                )}
-
-                <div className="p-5 md:p-6 grid grid-cols-1 md:grid-cols-[140px_1fr_auto_auto] gap-4 md:gap-6 items-center">
-                  <div className="flex items-center gap-3 md:block">
-                    <div className="text-2xl font-black font-display text-white tabular-nums">{cls.time}</div>
-                    <div className="flex items-center gap-1.5 text-white/40 text-xs mt-0.5">
+                <div className="grid grid-cols-1 md:grid-cols-[140px_1fr_auto_auto] gap-4 items-center">
+                  
+                  {/* TIME */}
+                  <div>
+                    <div className="text-2xl font-bold text-white">
+                      {cls.time}
+                    </div>
+                    <div className="text-xs text-white/40 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {cls.duration}
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-lg md:text-xl font-bold text-white">{cls.name}</h3>
-                      {isStarting && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-primary/20 border border-primary/40 rounded-full text-primary text-xs font-bold animate-pulse">
-                          <Flame className="w-3 h-3 fill-primary" />
-                          Starting Soon
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-white/50">
+                  {/* INFO */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white">
+                      {cls.name}
+                    </h3>
+
+                    <div className="text-sm text-white/50 flex gap-4 mt-1">
                       <span>with {cls.trainer}</span>
                       <span className="flex items-center gap-1">
                         <Users className="w-3.5 h-3.5" />
-                        {cls.spots === 0 ? "Class full" : `${cls.spots} spots left`}
+                        {isFull
+                          ? "Class full"
+                          : `${cls.spots} of ${cls.totalSpots} spots left`}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="flex-1 max-w-[160px] h-1 bg-white/10 rounded-full overflow-hidden">
+
+                    {/* PROGRESS */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="h-1 bg-white/10 rounded w-40 overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all ${isFull ? "bg-red-500" : isStarting ? "bg-primary" : "bg-white/30"}`}
+                          className={`h-full ${
+                            isFull ? "bg-red-500" : "bg-white/30"
+                          }`}
                           style={{ width: `${occupancyPct}%` }}
                         />
                       </div>
-                      <span className="text-white/30 text-xs">{occupancyPct}% booked</span>
+                      <span className="text-xs text-white/30">
+                        {occupancyPct}% booked
+                      </span>
                     </div>
                   </div>
 
-                  <div className="hidden md:flex flex-col items-center gap-1.5">
-                    <span className="text-white/30 text-xs uppercase tracking-wider">Intensity</span>
+                  {/* INTENSITY */}
+                  <div className="hidden md:flex flex-col items-center gap-1">
+                    <span className="text-xs text-white/30">
+                      Intensity
+                    </span>
                     <IntensityBar level={cls.intensity} />
                   </div>
 
-                  <div className="flex items-center gap-3 md:flex-col md:items-end md:gap-2">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${sc.bg} ${sc.text} ${sc.border}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${sc.dot} ${isStarting ? "animate-pulse" : ""}`} />
-                      {cls.status}
+                  {/* ACTION */}
+                  <div className="flex flex-col items-end gap-2">
+                    <span
+                      className={`px-3 py-1 text-xs rounded-full border ${sc.bg} ${sc.text} ${sc.border}`}
+                    >
+                      {label}
                     </span>
 
                     {isFull ? (
                       <button
                         disabled
-                        className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-bold text-sm bg-white/5 text-white/20 cursor-not-allowed"
+                        className="px-5 py-2 text-sm bg-white/5 text-white/20 rounded-lg flex items-center gap-1"
                       >
                         <Lock className="w-3.5 h-3.5" />
                         Full
@@ -192,38 +217,19 @@ export function Schedule() {
                         href={bookMsg}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${
-                          isStarting
-                            ? "bg-primary text-black hover:bg-primary/90 shadow-[0_0_20px_rgba(57,255,20,0.3)] hover:shadow-[0_0_30px_rgba(57,255,20,0.5)]"
-                            : "bg-white/10 text-white hover:bg-white/18 border border-white/10"
-                        }`}
+                        className="px-5 py-2 text-sm bg-primary text-black rounded-lg flex items-center gap-1"
                       >
                         Book Slot
                         <ChevronRight className="w-3.5 h-3.5" />
                       </a>
                     )}
                   </div>
+
                 </div>
               </motion.div>
             );
           })}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8 flex justify-center"
-        >
-          <a
-            href={waLink("Hi! I'd like to know the full weekly class schedule at Forge Fitness.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/40 hover:text-primary text-sm font-medium transition-colors underline underline-offset-4"
-          >
-            View full weekly schedule &rarr;
-          </a>
-        </motion.div>
       </div>
     </section>
   );

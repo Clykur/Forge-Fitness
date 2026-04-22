@@ -176,8 +176,8 @@ export function TrainersPage() {
                       </div>
                     </div>
                     <a
-                      href={bookMsg}
-                      target="_blank"
+                    //  href={bookMsg}
+                      href="Classes"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-1.5 px-5 py-2.5 bg-primary text-black font-bold text-sm rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_16px_rgba(57,255,20,0.2)] hover:shadow-[0_0_24px_rgba(57,255,20,0.4)] whitespace-nowrap"
                     >

@@ -8,6 +8,8 @@ import { Classes } from "@/pages/Classes";
 import { TrainersPage } from "@/pages/TrainersPage";
 import { PricingPage } from "@/pages/PricingPage";
 import { ContactPage } from "@/pages/ContactPage";
+import { BookingPage } from "@/pages/Booking";
+import { BookingStatus } from "@/pages/BookingStatus";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -18,9 +20,11 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/classes" component={Classes} />
+        <Route path="/book/:classId" component={BookingPage} />
         <Route path="/trainers" component={TrainersPage} />
         <Route path="/pricing" component={PricingPage} />
         <Route path="/contact" component={ContactPage} />
+        <Route path="/booking-status" component={BookingStatus} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
